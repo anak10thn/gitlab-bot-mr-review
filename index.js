@@ -66,8 +66,7 @@ Please provide your review in the following format:
 
     try {
         const response = await anthropic.messages.create({
-            model: 'claude-3-opus-20240229',
-            max_tokens: 4000,
+            model: 'claude-3-7-sonnet-20250219',
             messages: [{
                 role: 'user',
                 content: prompt
@@ -100,7 +99,7 @@ async function reviewMergeRequest(projectId, mrIid) {
 ${review}
 
 ---
-*This review was generated automatically by Claude AI. Please review the suggestions and make appropriate changes.*`
+*This review was generated automatically by MAYAR AI. Please review the suggestions and make appropriate changes.*`
         });
 
         return { success: true, review };
@@ -125,6 +124,13 @@ app.post('/webhook', async (req, res) => {
                 await reviewMergeRequest(projectId, mrIid);
             }
         }
+
+        // if(event.object_kind === 'note' && event.object_attributes.note.includes('@mayar.bot')){
+        //     const projectId = event.project.id;
+        //     const mrIid = event.object_attributes.iid;
+        //     console.log("Yesss reviewww.....",projectId, mrIid)
+        //     await reviewMergeRequest(projectId, mrIid);
+        // }
 
         res.status(200).json({ message: 'Webhook processed successfully' });
     } catch (error) {
